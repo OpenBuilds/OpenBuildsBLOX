@@ -66,3 +66,14 @@ int mvToInt(int millivolt) {
   int val = map(millivolt, 0, 3300, 0, 4096);
   return val;
 }
+
+void limitInterrupt() {
+  // This function will be called when either limit sensor changes state (rising or falling edge)
+  if (digitalRead(LIMIT_SENSOR_1) == LOW || digitalRead(LIMIT_SENSOR_2) == LOW) {
+    // The limit sensor is LOW (falling edge), set the flag
+    limitTriggered = true;
+  } else {
+    // The limit sensor is HIGH (rising edge), clear the flag
+    limitTriggered = false;
+  }
+}

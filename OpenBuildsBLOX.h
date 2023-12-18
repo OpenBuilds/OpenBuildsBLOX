@@ -67,6 +67,8 @@ private:
   CRGB leds[NUM_LEDS];
   Servo servo;
   int mvToInt(int millivolt)
+  volatile bool limitTriggered = false; // Flag to indicate the limit has been reached
+  void limitInterrupt();
 };
 
 
