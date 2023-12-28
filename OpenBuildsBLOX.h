@@ -1,9 +1,11 @@
 #ifndef OpenBuildsBLOX_h
 #define OpenBuildsBLOX_h
 
-#include <FlexyStepper.h>
+
 #include <FastLED.h>
-// Define popular colors for the LEDs
+#define LED_PIN    48
+#define LED_COUNT 2
+// Define popular colors
 #define RED CRGB(255, 0, 0)
 #define GREEN CRGB(0, 255, 0)
 #define BLUE CRGB(0, 0, 255)
@@ -18,9 +20,8 @@
 #include <ESP32Servo.h>
 
 #include <Adafruit_MCP4725.h>
-Adafruit_MCP4725 dac1;
-Adafruit_MCP4725 dac2;
 
+#include <ESP_FlexyStepper.h>
 // Stepper 1
 const int DIR_1 = 8;  // Stepper1 DIR
 const int STEP_1 = 9; // Stepper1 STEP
@@ -33,11 +34,12 @@ const int STEP_2 = 13; // Stepper2 STEP
 const int ENABLE_2 = 14; // Stepper2 Enable
 const int FAULT_2 = 15; // Stepper2 Fault
 
-#define LED_PIN    48
-#define LED_COUNT 2
+const int SPEED_IN_STEPS_PER_SECOND = 25600;
+const int ACCELERATION_IN_STEPS_PER_SECOND = 25600;
+const int DECELERATION_IN_STEPS_PER_SECOND = 25600;
 
 #define PIN_SERVO 47
-Servo servo;  // create servo object to control a servo
+extern Servo servo;  // Declare as extern
 
 #define PIN_MOSFET1 41
 #define PIN_MOSFET2 42
@@ -45,29 +47,67 @@ Servo servo;  // create servo object to control a servo
 #define LIMIT_SENSOR_1 39 // Pin for the first limit sensor
 #define LIMIT_SENSOR_2 40 // Pin for the second limit sensor
 
+extern volatile bool limitTriggered; // Declare as extern
 
 class OpenBuildsBLOX {
 public:
   OpenBuildsBLOX();
 
-  // FlexyStepper functions
-  void moveTo(int steps);
-  void setSpeed(int speed);
+  void startUp();
+
 
   // FastLED functions
-  void setColor(int red, int green, int blue);
-  void show();
+  void led_setColor(const CRGB& color);
 
-  // ESP32Servo functions
-  void attachServo(int pin);
-  void writeServo(int angle);
+  // Servo
+  void servo_setPosition(int angle);
 
+  // FlexyStepper functions
+  void stepper_1_setStepsPerMillimeter(float motorStepPerMillimeter);
+  void stepper_2_setStepsPerMillimeter(float motorStepPerMillimeter);
+
+  void stepper_1_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond);
+  void stepper_2_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond);
+
+  void stepper_1_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond);
+  void stepper_2_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond);
+
+  void stepper_1_setCurrentPositionInMillimeters(float currentPositionInMillimeters);
+  void stepper_2_setCurrentPositionInMillimeters(float currentPositionInMillimeters);
+
+  void stepper_1_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond);
+  void stepper_2_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond);
+
+  void stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
+  void stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
+
+  void stepper_1_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
+  void stepper_2_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
+
+  void stepper_1_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
+  void stepper_2_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
+
+  void stepper_1_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
+  void stepper_2_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
+
+  void stepper_1_setCurrent(float milliAmps);
+  void stepper_2_setCurrent(float milliAmps);
+
+  // Serial Logging
+  void log(int value);
+  void log(unsigned int value);
+  void log(long value);
+  void log(unsigned long value);
+  void log(float value);
+  void log(double value);
+  void log(char value);
+  void log(const char* value);
+  void log(const String& value);
+  void log(bool value);
+    // Add more overloads for other data types as needed
 private:
-  FlexyStepper stepper;
-  CRGB leds[NUM_LEDS];
-  Servo servo;
-  int mvToInt(int millivolt)
-  volatile bool limitTriggered = false; // Flag to indicate the limit has been reached
+  int mvToInt(int millivolt);
+  CRGB leds[LED_COUNT];
   void limitInterrupt();
 };
 
