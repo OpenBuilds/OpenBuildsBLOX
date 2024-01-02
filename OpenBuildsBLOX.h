@@ -81,11 +81,15 @@ public:
   void stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
   void stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
 
+  // Tested and working
   void stepper_1_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
   void stepper_2_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
+  void stepper_both_moveRelativeInMillimeters(float distanceToMoveInMillimeters_stepper1, float distanceToMoveInMillimeters_stepper2);
 
+  // Tested and working
   void stepper_1_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
   void stepper_2_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
+  void stepper_both_moveToPositionInMillimeters(float distanceToMoveInMillimeters_stepper_1, float distanceToMoveInMillimeters_stepper_2);
 
   void stepper_1_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
   void stepper_2_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
