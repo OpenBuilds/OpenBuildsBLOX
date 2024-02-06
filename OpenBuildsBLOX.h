@@ -1,3 +1,8 @@
+// Dependant Libraries:
+//
+// https://github.com/pkerspe/ESP-FlexyStepper
+// https://github.com/fabianoriccardi/melody-player
+
 #ifndef OpenBuildsBLOX_h
 #define OpenBuildsBLOX_h
 
@@ -46,6 +51,10 @@ extern Servo servo;  // Declare as extern
 
 #define LIMIT_SENSOR_1 39 // Pin for the first limit sensor
 #define LIMIT_SENSOR_2 40 // Pin for the second limit sensor
+
+#include <melody_player.h>
+#include <melody_factory.h>
+#define BUZZER_PIN 7
 
 extern volatile bool limitTriggered; // Declare as extern
 
@@ -108,7 +117,14 @@ public:
   void log(const char* value);
   void log(const String& value);
   void log(bool value);
-    // Add more overloads for other data types as needed
+  // Add more overloads for other data types as needed
+
+  // Piezo Beeper
+  void playRTTTL(const char *melody);
+  void playMelody(const char *melody);
+
+
+
 private:
   int mvToInt(int millivolt);
   CRGB leds[LED_COUNT];

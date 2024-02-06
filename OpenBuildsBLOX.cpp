@@ -10,6 +10,8 @@ Adafruit_MCP4725 dac2;
 ESP_FlexyStepper stepper_1;
 ESP_FlexyStepper stepper_2;
 
+MelodyPlayer player(BUZZER_PIN);
+
 #if ARDUINO_USB_CDC_ON_BOOT
 #define HWSerial Serial0
 #define USBSerial Serial
@@ -71,6 +73,12 @@ void OpenBuildsBLOX::startUp() {
 
   stepper_1.startAsService(0);
   stepper_2.startAsService(0);
+  Serial.println("Started Stepper Motor Services");
+
+  pinMode(BUZZER_PIN, OUTPUT);
+  // rtttl::begin(BUZZER_PIN, arkanoid);
+  Serial.println("Started Piezo Beeper");
+
 
 
   Serial.println("Started Stepper Motor Instances");
@@ -106,8 +114,12 @@ void OpenBuildsBLOX::stepper_2_setCurrentPositionInMillimeters(float currentPosi
 void OpenBuildsBLOX::stepper_1_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond) {stepper_1.setSpeedInMillimetersPerSecond(speedInMillimetersPerSecond);}
 void OpenBuildsBLOX::stepper_2_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond) {stepper_2.setSpeedInMillimetersPerSecond(speedInMillimetersPerSecond);}
 
-void OpenBuildsBLOX::stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {}
-void OpenBuildsBLOX::stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {}
+void OpenBuildsBLOX::stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
+  stepper_1.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin)
+}
+void OpenBuildsBLOX::stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
+  stepper_2.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin)
+}
 
 
 void OpenBuildsBLOX::stepper_1_moveRelativeInMillimeters(float distanceToMoveInMillimeters) {
@@ -252,4 +264,10 @@ void OpenBuildsBLOX::log(const String& value) {
 
 void OpenBuildsBLOX::log(bool value) {
   Serial.println(value ? "true" : "false");
+}
+
+void OpenBuildsBLOX::playRTTTL(const char *melodyString) {
+  Melody melody = MelodyFactory.loadRtttlString(melodyString);
+  //Serial.print(melody.getTitle());
+  player.play(melody);
 }
