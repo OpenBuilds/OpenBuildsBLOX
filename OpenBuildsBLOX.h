@@ -56,7 +56,10 @@ extern Servo servo;  // Declare as extern
 #include <melody_factory.h>
 #define BUZZER_PIN 7
 
-extern volatile bool limitTriggered; // Declare as extern
+
+#define LEDC_CHANNEL_0     0
+#define LEDC_TIMER_12_BIT  12
+#define LEDC_BASE_FREQ     5000
 
 class OpenBuildsBLOX {
 public:
@@ -123,7 +126,7 @@ public:
   void playRTTTL(const char *melody);
   void playMelody(const char *melody);
 
-
+  void analogWriteS3(int pin, int dutyCycle);
 
 private:
   int mvToInt(int millivolt);

@@ -33,6 +33,9 @@ void loop() {
   myBLOX.stepper_2_setAccelerationInMillimetersPerSecondPerSecond(60); // Acceleration
   myBLOX.stepper_2_setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
 
+  // Home Steppers
+  //myBLOX.stepper_1_moveToHomeInMillimeters(1, 20, 5000, 39);
+  //myBLOX.stepper_2_moveToHomeInMillimeters(1, 20, 5000, 40);
 
   // Absolute Move
   myBLOX.led_setColor(BLUE);
@@ -48,9 +51,13 @@ void loop() {
   myBLOX.stepper_both_moveRelativeInMillimeters(-32, -32);
   delay(1000);
 
+  // Play melody
   myBLOX.led_setColor(PURPLE);
   myBLOX.playRTTTL(mario);
   delay(1000);
+
+  myBLOX.analogWriteS3(PIN_MOSFET1, 100);
+  myBLOX.analogWriteS3(PIN_MOSFET1, 50);
 
   // Log the run to Serial terminal
   myBLOX.log("Loop ran");

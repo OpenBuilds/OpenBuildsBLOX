@@ -115,10 +115,10 @@ void OpenBuildsBLOX::stepper_1_setSpeedInMillimetersPerSecond(float speedInMilli
 void OpenBuildsBLOX::stepper_2_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond) {stepper_2.setSpeedInMillimetersPerSecond(speedInMillimetersPerSecond);}
 
 void OpenBuildsBLOX::stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
-  stepper_1.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin)
+  stepper_1.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin);
 }
 void OpenBuildsBLOX::stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
-  stepper_2.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin)
+  stepper_2.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin);
 }
 
 
@@ -270,4 +270,16 @@ void OpenBuildsBLOX::playRTTTL(const char *melodyString) {
   Melody melody = MelodyFactory.loadRtttlString(melodyString);
   //Serial.print(melody.getTitle());
   player.play(melody);
+}
+
+void OpenBuildsBLOX::analogWriteS3(int pin, int dutyCyclePercent) {
+  // Setup timer and attach timer to the specified pin
+   ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+   ledcAttachPin(pin, LEDC_CHANNEL_0);
+
+   // calculate duty, 4095 from 2 ^ 12 - 1
+   uint32_t duty = (4095 / 100) * min(dutyCyclePercent, 100);
+
+   // write duty to LEDC
+   ledcWrite(LEDC_CHANNEL_0, duty);
 }
