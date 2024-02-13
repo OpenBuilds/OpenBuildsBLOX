@@ -54,6 +54,7 @@ extern Servo servo;  // Declare as extern
 
 #include <melody_player.h>
 #include <melody_factory.h>
+#define BUZZER_PWMCHANNEL 2
 #define BUZZER_PIN 7
 
 

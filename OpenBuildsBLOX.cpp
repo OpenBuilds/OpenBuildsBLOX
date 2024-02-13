@@ -10,7 +10,7 @@ Adafruit_MCP4725 dac2;
 ESP_FlexyStepper stepper_1;
 ESP_FlexyStepper stepper_2;
 
-MelodyPlayer player(BUZZER_PIN);
+MelodyPlayer player(BUZZER_PIN, BUZZER_PWMCHANNEL);
 
 #if ARDUINO_USB_CDC_ON_BOOT
 #define HWSerial Serial0
