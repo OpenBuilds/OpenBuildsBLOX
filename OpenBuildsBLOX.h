@@ -70,7 +70,7 @@ public:
 
 
   // FastLED functions
-  void led_setColor(const CRGB& color);
+  void led_setColor(const CRGB& color1, const CRGB& color2);
 
   // Servo
   void servo_setPosition(int angle);

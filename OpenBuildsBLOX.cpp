@@ -200,9 +200,9 @@ void OpenBuildsBLOX::stepper_2_setCurrent(float milliAmps) {
 }
 
 // FastLED functions
-void OpenBuildsBLOX::led_setColor(const CRGB& color) {
-  leds[0] = color;
-  leds[1] = color;
+void OpenBuildsBLOX::led_setColor(const CRGB& color1, const CRGB& color2) {
+  leds[0] = color1;
+  leds[1] = color2;
   FastLED.show();
 }
 

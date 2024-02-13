@@ -11,12 +11,12 @@ void setup() {
 
 void loop() {
   // LED to RED, Servo to 180deg
-  myBLOX.led_setColor(RED);
+  myBLOX.led_setColor(RED, RED);
   myBLOX.servo_setPosition(180);
   delay(1000);
 
   // LED to GREEN, Servo to 0deg
-  myBLOX.led_setColor(GREEN);
+  myBLOX.led_setColor(GREEN, GREEN);
   myBLOX.servo_setPosition(0);
   delay(1000);
 
@@ -38,21 +38,21 @@ void loop() {
   //myBLOX.stepper_2_moveToHomeInMillimeters(1, 20, 5000, 40);
 
   // Absolute Move
-  myBLOX.led_setColor(BLUE);
+  myBLOX.led_setColor(BLUE, RED);
   myBLOX.stepper_1_moveToPositionInMillimeters(32);
   myBLOX.stepper_2_moveToPositionInMillimeters(32);
   myBLOX.stepper_both_moveToPositionInMillimeters(32, 32);
   delay(100);
 
   // Relative Move
-  myBLOX.led_setColor(YELLOW);
+  myBLOX.led_setColor(YELLOW, GREEN);
   myBLOX.stepper_1_moveRelativeInMillimeters(-32);
   myBLOX.stepper_2_moveRelativeInMillimeters(-32);
   myBLOX.stepper_both_moveRelativeInMillimeters(-32, -32);
   delay(1000);
 
   // Play melody
-  myBLOX.led_setColor(PURPLE);
+  myBLOX.led_setColor(PURPLE, ORANGE);
   myBLOX.playRTTTL(mario);
   delay(1000);
 
