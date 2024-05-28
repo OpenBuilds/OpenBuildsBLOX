@@ -283,3 +283,49 @@ void OpenBuildsBLOX::analogWriteS3(int pin, int dutyCyclePercent) {
    // write duty to LEDC
    ledcWrite(LEDC_CHANNEL_0, duty);
 }
+
+
+float OpenBuildsBLOX::measureDist(int trig_pin, int echo_pin, const char* unit) {
+    // Initialize GPIO pins
+    pinMode(trig_pin, OUTPUT);
+    pinMode(echo_pin, INPUT);
+
+    // Generate a 10us pulse on TRIG_PIN to trigger the sensor
+    digitalWrite(trig_pin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig_pin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig_pin, LOW);
+
+    // Wait for the ECHO_PIN to go high, indicating the start of the echo
+    unsigned long start_time = micros();
+    while (!digitalRead(echo_pin)) {
+        if ((micros() - start_time) > 5000) // Timeout after 5ms
+            return -1.0f;
+    }
+
+    // Measure the duration of the echo signal
+    start_time = micros();
+    while (digitalRead(echo_pin)) {
+        if ((micros() - start_time) > 50000) // Timeout after 50ms
+            return -1.0f;
+    }
+    unsigned long end_time = micros();
+    unsigned long pulse_duration = end_time - start_time;
+
+    // Calculate distance based on the duration of the echo pulse
+    float distance = (pulse_duration * SOUND_SPEED) / (2 * 1000000); // Convert us to s and divide by 2 for round trip
+
+    // Convert distance based on unit parameter
+    if (strcmp(unit, "mm") == 0) {
+        distance *= 1000; // Convert meters to millimeters
+    } else if (strcmp(unit, "cm") == 0) {
+        distance *= 100; // Convert meters to centimeters
+    } else if (strcmp(unit, "in") == 0) {
+        distance *= 39.3701; // Convert meters to inches
+    } else if (strcmp(unit, "ft") == 0) {
+        distance *= 3.28084; // Convert meters to feet
+    }
+
+    return distance;
+}

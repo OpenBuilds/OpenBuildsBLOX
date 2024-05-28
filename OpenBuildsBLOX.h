@@ -62,6 +62,11 @@ extern Servo servo;  // Declare as extern
 #define LEDC_TIMER_12_BIT  12
 #define LEDC_BASE_FREQ     5000
 
+// Ultrasonic
+#define SOUND_SPEED 343.0f // Speed of sound in air in m/s
+
+
+
 class OpenBuildsBLOX {
 public:
   OpenBuildsBLOX();
@@ -128,6 +133,7 @@ public:
   void playMelody(const char *melody);
 
   void analogWriteS3(int pin, int dutyCycle);
+  float measureDist(int trig_pin, int echo_pin, const char* unit);
 
 private:
   int mvToInt(int millivolt);
