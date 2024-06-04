@@ -1,7 +1,7 @@
 #include "OpenBuildsBLOX.h"
 
 CRGB leds[LED_COUNT];
-Servo servo;
+
 volatile bool limitTriggered = false;
 
 Adafruit_MCP4725 dac1;
@@ -21,8 +21,7 @@ USBCDC USBSerial;
 #endif
 
 OpenBuildsBLOX::OpenBuildsBLOX() {
-
-
+  // Nothing to initialise on instantiation
 }
 
 void OpenBuildsBLOX::startUp() {
@@ -79,21 +78,16 @@ void OpenBuildsBLOX::startUp() {
   // rtttl::begin(BUZZER_PIN, arkanoid);
   Serial.println("Started Piezo Beeper");
 
-
-
-  Serial.println("Started Stepper Motor Instances");
-
-  servo.setPeriodHertz(50);    // standard 50 hz servo
-  servo.attach(PIN_SERVO, 500, 2000); // attaches the servo on pin 47 to the servo object
-  Serial.println("Started RC Servo");
-
   pinMode(PIN_MOSFET1, OUTPUT);
   pinMode(PIN_MOSFET2, OUTPUT);
   Serial.println("Started Switch Outputs pin Modes");
-  //
+
   // // attachInterrupt(digitalPinToInterrupt(LIMIT_SENSOR_1), limitInterrupt, CHANGE);
   // // attachInterrupt(digitalPinToInterrupt(LIMIT_SENSOR_2), limitInterrupt, CHANGE);
-  Serial.println("Started Limit Switch Interrupts");
+  //Serial.println("Started Limit Switch Interrupts");
+
+  // Servo needs no init, but adding log for completeness
+  Serial.println("Started Servo");
   //
 }
 
@@ -206,8 +200,25 @@ void OpenBuildsBLOX::led_setColor(const CRGB& color1, const CRGB& color2) {
   FastLED.show();
 }
 
-void OpenBuildsBLOX::servo_setPosition(int angle) {
-  servo.write(angle);
+void OpenBuildsBLOX::servo_setPosition(uint32_t angle) {
+  uint8_t channel = SERVO_CHANNEL;
+  uint32_t valueMax = 180;
+  // Servo pulse width range (in microseconds)
+  const uint32_t minUs = 500;  // 0.5ms
+  const uint32_t maxUs = 2000;  // 2ms
+
+  // Calculate pulse width in microseconds
+  uint32_t pulseWidth = minUs + (angle * (maxUs - minUs) / valueMax);
+
+  // Calculate duty cycle (12-bit resolution, 4096 steps)
+  uint32_t duty = (pulseWidth * 4096) / (1000000 / SERVO_BASE_FREQ);
+
+  ledcSetup(SERVO_CHANNEL, SERVO_BASE_FREQ, SERVO_TIMER_12_BIT);
+  ledcAttachPin(PIN_SERVO, SERVO_CHANNEL);
+
+  // Write duty to LEDC
+  ledcWrite(channel, duty);
+  delay(25); // not sure why but doesn't work without a delay after. Unable to find cause or alternative
 }
 
 int OpenBuildsBLOX::mvToInt(int millivolt) {

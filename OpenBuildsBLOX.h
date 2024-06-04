@@ -22,11 +22,22 @@
 #define WHITE CRGB(255, 255, 255)
 #define BLACK CRGB(0, 0, 0)
 
-#include <ESP32Servo.h>
-
 #include <Adafruit_MCP4725.h>
 
 #include <ESP_FlexyStepper.h>
+
+//PWM Channel Allocation
+// Mosfets
+#define LEDC_CHANNEL_0     0
+#define LEDC_TIMER_12_BIT  12
+#define LEDC_BASE_FREQ     5000
+//PWM Channel Allocation
+// Servo
+#define SERVO_CHANNEL     1
+//PWM Channel Allocation
+// Beeper
+#define BUZZER_PWMCHANNEL 2
+
 // Stepper 1
 const int DIR_1 = 8;  // Stepper1 DIR
 const int STEP_1 = 9; // Stepper1 STEP
@@ -43,29 +54,26 @@ const int SPEED_IN_STEPS_PER_SECOND = 25600;
 const int ACCELERATION_IN_STEPS_PER_SECOND = 25600;
 const int DECELERATION_IN_STEPS_PER_SECOND = 25600;
 
-#define PIN_SERVO 47
-extern Servo servo;  // Declare as extern
+// RC Servo
+#define SERVO_TIMER_12_BIT  12
+#define SERVO_BASE_FREQ     50
+#define PIN_SERVO          47
 
+// Mosfets
 #define PIN_MOSFET1 41
 #define PIN_MOSFET2 42
 
+// Limits Inputs
 #define LIMIT_SENSOR_1 39 // Pin for the first limit sensor
 #define LIMIT_SENSOR_2 40 // Pin for the second limit sensor
 
+// Beeper (RTTTL)
 #include <melody_player.h>
 #include <melody_factory.h>
-#define BUZZER_PWMCHANNEL 2
 #define BUZZER_PIN 7
-
-
-#define LEDC_CHANNEL_0     0
-#define LEDC_TIMER_12_BIT  12
-#define LEDC_BASE_FREQ     5000
 
 // Ultrasonic
 #define SOUND_SPEED 343.0f // Speed of sound in air in m/s
-
-
 
 class OpenBuildsBLOX {
 public:
@@ -78,7 +86,7 @@ public:
   void led_setColor(const CRGB& color1, const CRGB& color2);
 
   // Servo
-  void servo_setPosition(int angle);
+  void servo_setPosition(uint32_t angle);
 
   // FlexyStepper functions
   void stepper_1_setStepsPerMillimeter(float motorStepPerMillimeter);
@@ -132,7 +140,10 @@ public:
   void playRTTTL(const char *melody);
   void playMelody(const char *melody);
 
-  void analogWriteS3(int pin, int dutyCycle);
+  // PWM OUTPUT
+  void analogWriteS3(int pin, int dutyCycle);1
+
+  // Ultrasonic
   float measureDist(int trig_pin, int echo_pin, const char* unit);
 
 private:
