@@ -141,7 +141,7 @@ public:
   void playMelody(const char *melody);
 
   // PWM OUTPUT
-  void analogWriteS3(int pin, int dutyCycle);1
+  void analogWriteS3(int pin, int dutyCycle);
 
   // Ultrasonic
   float measureDist(int trig_pin, int echo_pin, const char* unit);
