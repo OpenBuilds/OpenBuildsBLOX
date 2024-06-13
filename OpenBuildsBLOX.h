@@ -6,8 +6,10 @@
 #ifndef OpenBuildsBLOX_h
 #define OpenBuildsBLOX_h
 
-
+//To disable pragma messages on compile include this Before including FastLED.h
+#define FASTLED_INTERNAL
 #include <FastLED.h>
+
 #define LED_PIN    48
 #define LED_COUNT 2
 // Define popular colors
