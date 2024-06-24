@@ -27,6 +27,7 @@ OpenBuildsBLOX::OpenBuildsBLOX() {
 void OpenBuildsBLOX::startUp() {
 
   Serial.begin(115200);
+  Serial.setTxTimeoutMs(0);   // <<<====== solves this issue of delay per https://github.com/espressif/arduino-esp32/issues/6983#issuecomment-1346941805
   Serial.setDebugOutput(true);
   Serial.println("Starting BLOX Firmware:");
 
