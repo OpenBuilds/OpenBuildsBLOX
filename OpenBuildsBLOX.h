@@ -9,7 +9,6 @@
 //To disable pragma messages on compile include this Before including FastLED.h
 #define FASTLED_INTERNAL
 #include <FastLED.h>
-
 #define LED_PIN    48
 #define LED_COUNT 2
 // Define popular colors
@@ -24,9 +23,6 @@
 #define WHITE CRGB(255, 255, 255)
 #define BLACK CRGB(0, 0, 0)
 
-#include <Adafruit_MCP4725.h>
-
-#include <ESP_FlexyStepper.h>
 
 //PWM Channel Allocation
 // Mosfets
@@ -40,6 +36,8 @@
 // Beeper
 #define BUZZER_PWMCHANNEL 2
 
+#include <Adafruit_MCP4725.h>
+#include <ESP_FlexyStepper.h>
 // Stepper 1
 const int DIR_1 = 8;  // Stepper1 DIR
 const int STEP_1 = 9; // Stepper1 STEP
@@ -76,6 +74,19 @@ const int DECELERATION_IN_STEPS_PER_SECOND = 25600;
 
 // Ultrasonic
 #define SOUND_SPEED 343.0f // Speed of sound in air in m/s
+
+#include <FS.h>
+#include <SD.h>
+#include <SPI.h>
+
+#define SPI_MOSI 35
+#define SPI_MISO 37
+#define SPI_SCK 36
+
+#define SD_CS 5
+
+#include <Wire.h>
+
 
 class OpenBuildsBLOX {
 public:
@@ -147,6 +158,10 @@ public:
 
   // Ultrasonic
   float measureDist(int trig_pin, int echo_pin, const char* unit);
+
+  // SD Logging
+  bool hasSD();
+  bool logToSD(const char* filename, const char* data);
 
 private:
   int mvToInt(int millivolt);

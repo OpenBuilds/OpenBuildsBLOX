@@ -40,7 +40,7 @@ void OpenBuildsBLOX::startUp() {
   Wire.begin(3, 4);
   Serial.println("Started i2c");
 
-  SPI.begin(35, 37, 36);  // IO35 as MOSI, IO37 as MISO, IO36 as SCK
+  SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
   Serial.println("Started SPI");
 
   dac1.begin(0x60);
@@ -83,13 +83,29 @@ void OpenBuildsBLOX::startUp() {
   pinMode(PIN_MOSFET2, OUTPUT);
   Serial.println("Started Switch Outputs pin Modes");
 
-  // // attachInterrupt(digitalPinToInterrupt(LIMIT_SENSOR_1), limitInterrupt, CHANGE);
-  // // attachInterrupt(digitalPinToInterrupt(LIMIT_SENSOR_2), limitInterrupt, CHANGE);
-  //Serial.println("Started Limit Switch Interrupts");
-
   // Servo needs no init, but adding log for completeness
   Serial.println("Started Servo");
-  //
+
+  // SD Card
+  if (!SD.begin(SD_CS, SPI, 4000000)) {
+    Serial.println("Unable to start SD Card");
+  } else {
+    uint8_t cardType = SD.cardType();
+    uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+    if (cardType == CARD_NONE) {
+      Serial.println("No SD card attached");
+    } else if (cardType == CARD_MMC) {
+      Serial.print("MMC card attached");
+    } else if (cardType == CARD_SD) {
+      Serial.print("SDSC card attached");
+    } else if (cardType == CARD_SDHC) {
+      Serial.print("SDHC card attached");
+    } else {
+      Serial.print("UNKNOWN card");
+    }
+    Serial.printf("SD Card Size: %lluMB\n", cardSize);
+    Serial.println("Started SD Card");
+  }
 }
 
 
@@ -340,4 +356,45 @@ float OpenBuildsBLOX::measureDist(int trig_pin, int echo_pin, const char* unit) 
     }
 
     return distance;
+}
+
+bool OpenBuildsBLOX::hasSD() {
+  File root = SD.open("/");
+  if (root) {
+    root.close();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool OpenBuildsBLOX::logToSD(const char* filename, const char* data) {
+  File file = SD.open(filename, FILE_APPEND);
+  if (!file) {
+    Serial.println("Failed to open file for writing");
+    return false;
+  }
+
+  // Get current time
+  struct tm timeinfo;
+  bool hasTime = getLocalTime(&timeinfo);
+
+  // Format time or uptime to string
+  char timeStr[64];
+  if (hasTime) {
+    strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", &timeinfo);
+  } else {
+    unsigned long secondsSinceBoot = millis() / 1000;
+    snprintf(timeStr, sizeof(timeStr), "Uptime: %lu seconds", secondsSinceBoot);
+    Serial.println("No time available (yet), logging uptime");
+  }
+
+  // Write time/uptime and data to file in CSV format
+  file.print(timeStr);
+  file.print(", ");
+  file.println(data);
+
+  file.close();
+  Serial.println("Data logged to SD card");
+  return true;
 }
