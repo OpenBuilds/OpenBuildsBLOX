@@ -101,40 +101,8 @@ public:
   // Servo
   void servo_setPosition(uint32_t angle);
 
-  // FlexyStepper functions
-  void stepper_1_setStepsPerMillimeter(float motorStepPerMillimeter);
-  void stepper_2_setStepsPerMillimeter(float motorStepPerMillimeter);
-
-  void stepper_1_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond);
-  void stepper_2_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond);
-
-  void stepper_1_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond);
-  void stepper_2_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond);
-
-  void stepper_1_setCurrentPositionInMillimeters(float currentPositionInMillimeters);
-  void stepper_2_setCurrentPositionInMillimeters(float currentPositionInMillimeters);
-
-  void stepper_1_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond);
-  void stepper_2_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond);
-
-  void stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
-  void stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin);
-
-  // Tested and working
-  void stepper_1_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
-  void stepper_2_moveRelativeInMillimeters(float distanceToMoveInMillimeters); // Blocking
-  void stepper_both_moveRelativeInMillimeters(float distanceToMoveInMillimeters_stepper1, float distanceToMoveInMillimeters_stepper2);
-
-  // Tested and working
-  void stepper_1_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
-  void stepper_2_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters); // Blocking
-  void stepper_both_moveToPositionInMillimeters(float distanceToMoveInMillimeters_stepper_1, float distanceToMoveInMillimeters_stepper_2);
-
-  void stepper_1_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
-  void stepper_2_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters); // Non Blocking
-
-  void stepper_1_setCurrent(float milliAmps);
-  void stepper_2_setCurrent(float milliAmps);
+  // Stepper Current DACs
+  void setCurrent(int channel, float milliAmps);
 
   // Serial Logging
   void log(int value);

@@ -26,16 +26,16 @@ void loop() {
 
   // Stepper Configuration
   myBLOX.stepper_1_setCurrent(700); // milliAmps
-  myBLOX.stepper_1_setStepsPerMillimeter(400); // stepsPerMM
-  myBLOX.stepper_1_setSpeedInMillimetersPerSecond(120); // Speed
-  myBLOX.stepper_1_setAccelerationInMillimetersPerSecondPerSecond(60); // Acceleration
-  myBLOX.stepper_1_setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
+  myBLOX.stepper_1.setStepsPerMillimeter(400); // stepsPerMM
+  myBLOX.stepper_1.setSpeedInMillimetersPerSecond(120); // Speed
+  myBLOX.stepper_1.setAccelerationInMillimetersPerSecondPerSecond(60); // Acceleration
+  myBLOX.stepper_1.setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
 
   myBLOX.stepper_2_setCurrent(700); // milliAmps
-  myBLOX.stepper_2_setStepsPerMillimeter(400); // stepsPerMM
-  myBLOX.stepper_2_setSpeedInMillimetersPerSecond(120); // Speed
-  myBLOX.stepper_2_setAccelerationInMillimetersPerSecondPerSecond(60); // Acceleration
-  myBLOX.stepper_2_setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
+  myBLOX.stepper_2.setStepsPerMillimeter(400); // stepsPerMM
+  myBLOX.stepper_2.setSpeedInMillimetersPerSecond(120); // Speed
+  myBLOX.stepper_2.setAccelerationInMillimetersPerSecondPerSecond(60); // Acceleration
+  myBLOX.stepper_2.setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
   myBLOX.log("Steppers Configured");
 
   // Home Steppers

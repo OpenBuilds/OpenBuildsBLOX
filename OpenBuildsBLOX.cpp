@@ -110,86 +110,7 @@ void OpenBuildsBLOX::startUp() {
 
 
 // FlexyStepper functions
-void OpenBuildsBLOX::stepper_1_setStepsPerMillimeter(float motorStepPerMillimeter) {stepper_1.setStepsPerMillimeter(motorStepPerMillimeter);}
-void OpenBuildsBLOX::stepper_2_setStepsPerMillimeter(float motorStepPerMillimeter) {stepper_2.setStepsPerMillimeter(motorStepPerMillimeter);}
-
-void OpenBuildsBLOX::stepper_1_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond) {stepper_1.setAccelerationInMillimetersPerSecondPerSecond(accelerationInMillimetersPerSecondPerSecond);}
-void OpenBuildsBLOX::stepper_2_setAccelerationInMillimetersPerSecondPerSecond(float accelerationInMillimetersPerSecondPerSecond) {stepper_2.setAccelerationInMillimetersPerSecondPerSecond(accelerationInMillimetersPerSecondPerSecond);}
-
-void OpenBuildsBLOX::stepper_1_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond) {stepper_1.setDecelerationInMillimetersPerSecondPerSecond(decelerationInMillimetersPerSecondPerSecond);}
-void OpenBuildsBLOX::stepper_2_setDecelerationInMillimetersPerSecondPerSecond(float decelerationInMillimetersPerSecondPerSecond) {stepper_2.setDecelerationInMillimetersPerSecondPerSecond(decelerationInMillimetersPerSecondPerSecond);}
-
-void OpenBuildsBLOX::stepper_1_setCurrentPositionInMillimeters(float currentPositionInMillimeters) {stepper_1.setCurrentPositionInMillimeters(currentPositionInMillimeters);}
-void OpenBuildsBLOX::stepper_2_setCurrentPositionInMillimeters(float currentPositionInMillimeters) {stepper_2.setCurrentPositionInMillimeters(currentPositionInMillimeters);}
-
-void OpenBuildsBLOX::stepper_1_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond) {stepper_1.setSpeedInMillimetersPerSecond(speedInMillimetersPerSecond);}
-void OpenBuildsBLOX::stepper_2_setSpeedInMillimetersPerSecond(float speedInMillimetersPerSecond) {stepper_2.setSpeedInMillimetersPerSecond(speedInMillimetersPerSecond);}
-
-void OpenBuildsBLOX::stepper_1_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
-  stepper_1.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin);
-}
-void OpenBuildsBLOX::stepper_2_moveToHomeInMillimeters(signed char directionTowardHome, float speedInMillimetersPerSecond, long maxDistanceToMoveInMillimeters, int homeLimitSwitchPin) {
-  stepper_2.moveToHomeInMillimeters(directionTowardHome, speedInMillimetersPerSecond, maxDistanceToMoveInMillimeters, homeLimitSwitchPin);
-}
-
-
-void OpenBuildsBLOX::stepper_1_moveRelativeInMillimeters(float distanceToMoveInMillimeters) {
-  stepper_1.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters);
-  while (stepper_1.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper position: %i\n", stepper_1.getCurrentPositionInSteps());
-  }
-} // Blocking
-void OpenBuildsBLOX::stepper_2_moveRelativeInMillimeters(float distanceToMoveInMillimeters) {
-  stepper_2.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters);
-  while (stepper_2.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper position: %i\n", stepper_2.getCurrentPositionInSteps());
-  }
-} // Blocking
-
-void OpenBuildsBLOX::stepper_both_moveRelativeInMillimeters(float distanceToMoveInMillimeters_stepper_1, float distanceToMoveInMillimeters_stepper_2) {
-  stepper_1.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters_stepper_1);
-  stepper_2.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters_stepper_2);
-  while (stepper_1.getDistanceToTargetSigned() != 0 && stepper_2.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper 1 position: %i\n", stepper_1.getCurrentPositionInSteps());
-    Serial.printf("Stepper 2 position: %i\n", stepper_2.getCurrentPositionInSteps());
-  } // Blocking
-}
-
-void OpenBuildsBLOX::stepper_1_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters) {
-  // stepper_1.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters); // Bug https://github.com/pkerspe/ESP-FlexyStepper/issues/35
-  stepper_1.setTargetPositionInMillimeters(absolutePositionToMoveToInMillimeters);
-  while (stepper_1.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper 1 position: %i\n", stepper_1.getCurrentPositionInSteps());
-  } // Blocking
-} // Blocking
-
-void OpenBuildsBLOX::stepper_2_moveToPositionInMillimeters(float absolutePositionToMoveToInMillimeters) {
-  // stepper_2.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters); // Bug https://github.com/pkerspe/ESP-FlexyStepper/issues/35
-  stepper_2.setTargetPositionInMillimeters(absolutePositionToMoveToInMillimeters);
-  while (stepper_2.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper 2 position: %i\n", stepper_2.getCurrentPositionInSteps());
-  } // Blocking
-} // Blocking
-
-void OpenBuildsBLOX::stepper_both_moveToPositionInMillimeters(float distanceToMoveInMillimeters_stepper_1, float distanceToMoveInMillimeters_stepper_2) {
-  // stepper_1.moveToPositionInMillimeters(distanceToMoveInMillimeters_stepper_1); // Bug https://github.com/pkerspe/ESP-FlexyStepper/issues/35
-  // stepper_2.moveToPositionInMillimeters(distanceToMoveInMillimeters_stepper_2); // Bug https://github.com/pkerspe/ESP-FlexyStepper/issues/35
-  stepper_1.setTargetPositionInMillimeters(distanceToMoveInMillimeters_stepper_1);
-  stepper_2.setTargetPositionInMillimeters(distanceToMoveInMillimeters_stepper_2);
-  while (stepper_1.getDistanceToTargetSigned() != 0 && stepper_2.getDistanceToTargetSigned() != 0) {
-    Serial.printf("Stepper 1 position: %i\n", stepper_1.getCurrentPositionInSteps());
-    Serial.printf("Stepper 2 position: %i\n", stepper_2.getCurrentPositionInSteps());
-  } // Blocking
-} // Blocking
-
-void OpenBuildsBLOX::stepper_1_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters) {
-  stepper_1.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters);
-} // Non Blocking
-void OpenBuildsBLOX::stepper_2_setTargetPositionRelativeInMillimeters(float distanceToMoveInMillimeters) {
-  stepper_2.setTargetPositionRelativeInMillimeters(distanceToMoveInMillimeters);
-} // Non Blocking
-
-void OpenBuildsBLOX::stepper_1_setCurrent(float milliAmps) {
+void OpenBuildsBLOX::setCurrent(int channel, float milliAmps) {
   // Calculate the millivolt value based on the given current
    float millivolt = milliAmps / 5.0 / 0.22;
 
@@ -197,18 +118,13 @@ void OpenBuildsBLOX::stepper_1_setCurrent(float milliAmps) {
    int dacValue = map(millivolt, 0, 3300, 0, 4096);
 
    // Set the DAC voltage
-   dac1.setVoltage(dacValue, false);
+   if (channel == 1) {
+     dac1.setVoltage(dacValue, false);
+   } else if (channel == 2) {
+    dac2.setVoltage(dacValue, false);
+   }
 }
-void OpenBuildsBLOX::stepper_2_setCurrent(float milliAmps) {
-  // Calculate the millivolt value based on the given current
-   float millivolt = milliAmps / 5.0 / 0.22;
 
-   // Map the millivolt value to the DAC range (0 to 3300 mV to 0 to 4096)
-   int dacValue = map(millivolt, 0, 3300, 0, 4096);
-
-   // Set the DAC voltage
-   dac2.setVoltage(dacValue, false);
-}
 
 // FastLED functions
 void OpenBuildsBLOX::led_setColor(const CRGB& color1, const CRGB& color2) {
