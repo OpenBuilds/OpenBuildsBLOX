@@ -38,27 +38,6 @@ void loop() {
   stepper_2.setDecelerationInMillimetersPerSecondPerSecond(60); // Deceleration
   myBLOX.log("Steppers Configured");
 
-  // Home Steppers
-  //stepper_1_moveToHomeInMillimeters(1, 20, 5000, 39);
-  //stepper_2_moveToHomeInMillimeters(1, 20, 5000, 40);
-  //myBLOX.log("Steppers Homed");
-
-  // Absolute Move
-  myBLOX.led_setColor(BLUE, RED);
-  stepper_1_moveToPositionInMillimeters(32);
-  stepper_2_moveToPositionInMillimeters(32);
-  stepper_both_moveToPositionInMillimeters(32, 32);
-  myBLOX.log("Steppers: Absolute Move");
-  delay(100);
-
-  // Relative Move
-  myBLOX.led_setColor(YELLOW, GREEN);
-  stepper_1_moveRelativeInMillimeters(-32);
-  stepper_2_moveRelativeInMillimeters(-32);
-  stepper_both_moveRelativeInMillimeters(-32, -32);
-  myBLOX.log("Steppers: Relative Move");
-  delay(1000);
-
   // Play melody
   myBLOX.led_setColor(PURPLE, ORANGE);
   myBLOX.playRTTTL(siren);
