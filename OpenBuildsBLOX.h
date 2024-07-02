@@ -50,6 +50,11 @@ const int STEP_2 = 13; // Stepper2 STEP
 const int ENABLE_2 = 14; // Stepper2 Enable
 const int FAULT_2 = 15; // Stepper2 Fault
 
+extern Adafruit_MCP4725 dac1;
+extern Adafruit_MCP4725 dac2;
+extern ESP_FlexyStepper stepper_1;
+extern ESP_FlexyStepper stepper_2;
+
 const int SPEED_IN_STEPS_PER_SECOND = 25600;
 const int ACCELERATION_IN_STEPS_PER_SECOND = 25600;
 const int DECELERATION_IN_STEPS_PER_SECOND = 25600;
