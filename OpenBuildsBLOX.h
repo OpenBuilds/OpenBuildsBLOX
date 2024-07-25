@@ -10,7 +10,9 @@
 #define FASTLED_INTERNAL
 #include <FastLED.h>
 #define LED_PIN    48
-#define LED_COUNT 2
+#define LED_COUNT 255
+extern CRGB leds[LED_COUNT];
+
 // Define popular colors
 #define RED CRGB(255, 0, 0)
 #define GREEN CRGB(0, 255, 0)
@@ -138,7 +140,6 @@ public:
 
 private:
   int mvToInt(int millivolt);
-  CRGB leds[LED_COUNT];
   void limitInterrupt();
 };
 
