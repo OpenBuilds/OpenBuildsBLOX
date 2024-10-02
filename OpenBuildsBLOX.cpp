@@ -95,13 +95,13 @@ void OpenBuildsBLOX::startUp() {
     if (cardType == CARD_NONE) {
       Serial.println("No SD card attached");
     } else if (cardType == CARD_MMC) {
-      Serial.print("MMC card attached");
+      Serial.println("MMC card attached");
     } else if (cardType == CARD_SD) {
-      Serial.print("SDSC card attached");
+      Serial.println("SDSC card attached");
     } else if (cardType == CARD_SDHC) {
-      Serial.print("SDHC card attached");
+      Serial.println("SDHC card attached");
     } else {
-      Serial.print("UNKNOWN card");
+      Serial.println("UNKNOWN card");
     }
     Serial.printf("SD Card Size: %lluMB\n", cardSize);
     Serial.println("Started SD Card");
