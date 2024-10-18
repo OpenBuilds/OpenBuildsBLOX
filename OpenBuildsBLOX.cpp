@@ -133,6 +133,11 @@ void OpenBuildsBLOX::led_setColor(const CRGB& color1, const CRGB& color2) {
   FastLED.show();
 }
 
+void OpenBuildsBLOX::led_setColorAtPos(int pos, const CRGB& color) {
+  leds[pos] = color;
+  FastLED.show();
+}
+
 void OpenBuildsBLOX::servo_setPosition(uint32_t angle) {
   uint8_t channel = SERVO_CHANNEL;
   uint32_t valueMax = 180;
