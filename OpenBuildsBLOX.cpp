@@ -21,7 +21,10 @@ USBCDC USBSerial;
 #endif
 
 OpenBuildsBLOX::OpenBuildsBLOX() {
-  // Nothing to initialise on instantiation
+  // Initialize all entries in pinChannelMap to -1 (unassigned)
+  for (int i = 0; i < MAX_CHANNELS; i++) {
+    pinChannelMap[i] = -1;
+  }
 }
 
 void OpenBuildsBLOX::startUp() {
@@ -221,16 +224,37 @@ void OpenBuildsBLOX::playRTTTL(const char *melodyString) {
   player.play(melody);
 }
 
+int OpenBuildsBLOX::getChannelForPin(int pin) {
+  // Check if the pin already has an assigned channel
+  for (int ch = 0; ch < nextChannel; ch++) {
+    if (pinChannelMap[ch] == pin) {
+      return ch; // Return the existing channel for this pin
+    }
+  }
+
+  // If no channel assigned, assign the next available channel
+  if (nextChannel < MAX_CHANNELS) {
+    pinChannelMap[nextChannel] = pin;
+    return nextChannel++; // Assign and increment channel counter
+  } else {
+    Serial.println("Error: No more LEDC channels available.");
+    return -1; // Indicate an error if no channels are left
+  }
+}
+
 void OpenBuildsBLOX::analogWriteS3(int pin, int dutyCyclePercent) {
-  // Setup timer and attach timer to the specified pin
-   ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
-   ledcAttachPin(pin, LEDC_CHANNEL_0);
+  int channel = getChannelForPin(pin);
+  if (channel == -1) return; // Exit if no channel available
 
-   // calculate duty, 4095 from 2 ^ 12 - 1
-   uint32_t duty = (4095 / 100) * min(dutyCyclePercent, 100);
+  // Setup the channel if this is the first time using it
+  ledcSetup(channel, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+  ledcAttachPin(pin, channel);
 
-   // write duty to LEDC
-   ledcWrite(LEDC_CHANNEL_0, duty);
+  // Calculate the duty cycle (12-bit resolution, max value 4095)
+  uint32_t duty = (4095 / 100) * min(dutyCyclePercent, 100);
+
+  // Write duty cycle to the LEDC
+  ledcWrite(channel, duty);
 }
 
 

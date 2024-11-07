@@ -6,6 +6,8 @@
 #ifndef OpenBuildsBLOX_h
 #define OpenBuildsBLOX_h
 
+#include <Arduino.h>     // Include Arduino core library for compatibility
+
 //To disable pragma messages on compile include this Before including FastLED.h
 #define FASTLED_INTERNAL
 #include <FastLED.h>
@@ -27,10 +29,12 @@ extern CRGB leds[LED_COUNT];
 
 
 //PWM Channel Allocation
-// Mosfets
-#define LEDC_CHANNEL_0     0
+// Mosfets and PWM on GPIO
 #define LEDC_TIMER_12_BIT  12
 #define LEDC_BASE_FREQ     5000
+#define MAX_CHANNELS 16 // ESP32 LEDC supports 16 channels
+
+
 //PWM Channel Allocation
 // Servo
 #define SERVO_CHANNEL     1
@@ -94,6 +98,8 @@ const int DECELERATION_IN_STEPS_PER_SECOND = 25600;
 
 #include <Wire.h>
 
+#include <map>  // Add this include directive for std::map
+
 
 class OpenBuildsBLOX {
 public:
@@ -142,6 +148,9 @@ public:
 private:
   int mvToInt(int millivolt);
   void limitInterrupt();
+  int pinChannelMap[MAX_CHANNELS]; // Store pin assigned to each channel
+  int nextChannel = 0; // Tracks the next available channel
+  int getChannelForPin(int pin); // Helper to find or assign a channel for a pin
 };
 
 
