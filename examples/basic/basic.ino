@@ -64,11 +64,9 @@ void loop() {
   myBLOX.log("Set switched output 1 to 100% and output 2 to 50%");
 
   // Log something to SD Card
-  if (hasSD()) {logToSD("file.txt", "Hello World");}
+  if (myBLOX.hasSD()) {logToSD("file.txt", "Hello World");}
   myBLOX.log("Logged test data to SD");
 
   // Log the run to Serial terminal
   myBLOX.log("Loop ran");
 }
-
-  
